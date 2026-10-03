@@ -1,0 +1,1 @@
+- [Groq provider choice](groq-provider.md) — Buildflow uses Groq for AI; keep it unless the user directs a provider change.
