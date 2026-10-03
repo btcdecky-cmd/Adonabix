@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Buildflow AI"
+description = "A no-login AI website-building workspace where users describe projects in a friendly chat, collaborate on a plan, edit generated code, and preview the result live."
+version = "1.0.0"
+id = "artifacts/buildflow"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25399
+
+[services.development]
+run = "pnpm --filter @workspace/buildflow run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/buildflow", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/buildflow/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25399"
+BASE_PATH = "/"
