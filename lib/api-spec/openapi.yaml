@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: agent
+    description: AI coding-agent interactions
 paths:
   /healthz:
     get:
@@ -24,6 +26,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /agent/turn:
+    post:
+      operationId: sendAgentTurn
+      tags: [agent]
+      summary: Send a message to the AI coding agent
+      description: Returns a server-sent event stream of assistant text chunks.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgentTurnInput"
+      responses:
+        "200":
+          description: SSE stream of assistant text chunks
+          content:
+            text/event-stream: {}
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: AI provider request failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +64,51 @@ components:
           type: string
       required:
         - status
+    AgentTurnInput:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum: [plan, build, edit]
+        request:
+          type: string
+          minLength: 1
+          maxLength: 12000
+        files:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AgentFile"
+        history:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AgentChatMessage"
+      required: [mode, request, files, history]
+    AgentFile:
+      type: object
+      properties:
+        path:
+          type: string
+          maxLength: 240
+        content:
+          type: string
+          maxLength: 40000
+      required: [path, content]
+    AgentChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+          maxLength: 12000
+      required: [role, content]
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
 

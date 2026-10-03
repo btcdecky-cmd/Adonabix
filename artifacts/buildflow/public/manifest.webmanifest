@@ -1,0 +1,18 @@
+{
+  "name": "Buildflow AI",
+  "short_name": "Buildflow",
+  "description": "A friendly AI coding workspace for turning ideas into websites.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f4ec",
+  "theme_color": "#f7f4ec",
+  "icons": [
+    {
+      "src": "/buildflow-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

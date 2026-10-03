@@ -6,6 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface AgentFile {
+  /** @maxLength 240 */
+  path: string;
+  /** @maxLength 40000 */
+  content: string;
 }
