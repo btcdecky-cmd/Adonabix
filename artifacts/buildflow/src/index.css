@@ -233,6 +233,23 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px
   .mobile-tabs button { border:0;background:transparent;color:#879189;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;padding:5px 12px; }
   .mobile-tabs button.active { color:#d45f46; }
 }
+@media (prefers-color-scheme: dark) {
+  body,.home-page { background:#101219;color:#edf0f6; }
+  .workspace,.workspace-header,.chat-pane,.code-pane,.preview-pane { background:#151820;border-color:#282d3a; }
+  .project-sidebar { background:#12151c;border-color:#282d3a; }
+  .pane-heading,.code-toolbar,.preview-toolbar,.chat-composer { border-color:#282d3a; }
+  .pane-title,.project-select,.chat-message,.file-row,.welcome-card strong,.brand { color:#e5e9f2; }
+  .welcome-card,.composer-box,.quiet-button,.icon-button { background:#1b1f29;border-color:#303646; }
+  .composer-box textarea,.editor-fallback { color:#e5e9f2; }
+  .editor-fallback { background:#12151c; }
+  .chat-message.user { background:#263329;color:#d8eadb; }
+  .side-project.active,.file-row.active { background:#202631;color:#f0f3f8; }
+  .preview-stage { background:#0c0e13; }
+  .preview-devices,.mode-pill { background:#20242e; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation-duration:.01ms!important;transition-duration:.01ms!important; }
+}
 @media (max-width:760px) {
   .topbar { height:68px;padding:0 20px; }
   .top-nav { gap:13px;font-size:11px; }

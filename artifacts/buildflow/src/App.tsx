@@ -81,7 +81,7 @@ function HomePage({ projects, onStart, onOpen }: {
         <h1>Make the thing<br />you <em>pictured.</em></h1>
         <p className="hero-description">Describe a website in plain language. Buildflow helps you shape the idea, writes the code, and gives you a preview you can make your own.</p>
         <div className="prompt-box">
-          <textarea aria-label="Describe your website idea" placeholder="A calm portfolio for a ceramic artist, with a gallery and a note about commissions…" value={prompt} onChange={(event) => setPrompt(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) submit(); }} data-testid="input-home-prompt" />
+          <textarea aria-label="Describe your website idea" placeholder="A calm portfolio for a ceramic artist, with a gallery and a note about commissions…" value={prompt} onChange={(event) => setPrompt(event.target.value)} onKeyDown={(event) => { if (event.nativeEvent.isComposing || event.keyCode === 229) return; if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) submit(); }} data-testid="input-home-prompt" />
           <div className="prompt-bottom">
             <span className="prompt-hint"><Sparkles size={13} /> Start with a rough idea. We’ll figure it out together.</span>
             <button className="primary-button" onClick={submit} disabled={!prompt.trim()} data-testid="button-plan-idea">Let’s plan <ArrowRight size={15} /></button>
@@ -326,7 +326,7 @@ function Workspace({ projects, activeProject, onProjectUpdate, onCreateProject, 
         </div>
         <div className="chat-composer">
           <div className="composer-box">
-            <textarea value={draft} onChange={(event) => setDraft(event.target.value)} placeholder={mode === 'plan' ? 'Describe what you have in mind…' : 'Ask for a change or a new direction…'} onKeyDown={(event) => { if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) sendDraft(); }} data-testid="input-chat-message" />
+            <textarea value={draft} onChange={(event) => setDraft(event.target.value)} placeholder={mode === 'plan' ? 'Describe what you have in mind…' : 'Ask for a change or a new direction…'} onKeyDown={(event) => { if (event.nativeEvent.isComposing || event.keyCode === 229) return; if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) sendDraft(); }} data-testid="input-chat-message" />
             <div className="composer-bottom"><span className="composer-note">⌘ / Ctrl + Enter to send</span><button className="send-button" disabled={!draft.trim() || streaming} aria-label="Send message" onClick={sendDraft} data-testid="button-send-message">{streaming ? <LoaderCircle size={14} /> : <Send size={14} />}</button></div>
           </div>
         </div>
@@ -358,7 +358,7 @@ function Workspace({ projects, activeProject, onProjectUpdate, onCreateProject, 
     {modal && <div className="modal-scrim" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setModal(null); }}><section className="modal-card" role="dialog" aria-modal="true">
       <h3>{modal.kind === 'rename-project' ? 'Name this project' : modal.kind === 'new-file' ? 'Add a file' : modal.kind === 'rename-file' ? 'Rename file' : modal.kind === 'delete-file' ? 'Remove this file?' : 'Delete this project?'}</h3>
       <p>{modal.kind === 'delete-project' ? 'This project and its local chat history will be removed from this browser. This can’t be undone.' : modal.kind === 'delete-file' ? `“${selectedFile?.path}” will be removed from this project.` : modal.kind === 'new-file' ? 'Add a file path, including its extension, to your project.' : modal.kind === 'rename-file' ? 'Choose a new path for this file.' : 'Give your idea a name you’ll recognize.'}</p>
-      {(modal.kind === 'rename-project' || modal.kind === 'new-file' || modal.kind === 'rename-file') && <input autoFocus value={modalValue} onChange={(event) => setModalValue(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') submitModal(); }} aria-label={modal.kind === 'rename-project' ? 'Project name' : 'File path'} data-testid="input-modal-value" />}
+      {(modal.kind === 'rename-project' || modal.kind === 'new-file' || modal.kind === 'rename-file') && <input autoFocus value={modalValue} onChange={(event) => setModalValue(event.target.value)} onKeyDown={(event) => { if (event.nativeEvent.isComposing || event.keyCode === 229) return; if (event.key === 'Enter') submitModal(); }} aria-label={modal.kind === 'rename-project' ? 'Project name' : 'File path'} data-testid="input-modal-value" />}
       <div className="modal-actions"><button onClick={() => setModal(null)} data-testid="button-modal-cancel">Cancel</button><button className="confirm" onClick={submitModal} data-testid="button-modal-confirm">{modal.kind.startsWith('delete') ? 'Delete' : 'Save'}</button></div>
     </section></div>}
   </main>;
