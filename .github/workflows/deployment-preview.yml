@@ -1,0 +1,67 @@
+name: Deployment Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build frontend and deploy preview
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node and pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          node-version: '24'
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install workspace dependencies
+        run: pnpm -w install --frozen-lockfile
+
+      - name: Build frontend (Buildflow)
+        run: pnpm --filter @workspace/buildflow run build
+
+      - name: Set deploy directory
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "DEPLOY_DIR=pr-${{ github.event.number }}" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_DIR=." >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: artifacts/buildflow/dist
+          destination_dir: ${{ env.DEPLOY_DIR }}
+          clean: true
+          commit-message: "chore: deploy Buildflow preview (source: ${{ github.sha }})"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post PR comment with preview URL (pull_request only)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const prNumber = context.payload.pull_request.number;
+            const previewPath = `pr-${prNumber}`;
+            const url = `https://${owner}.github.io/${repo}/${previewPath}/`;
+            const body = `Preview deployed: <${url}>\n\nThis preview is built for PR #${prNumber}. It will be overwritten on subsequent commits.`;
+            await github.issues.createComment({ owner, repo, issue_number: prNumber, body });
