@@ -139,6 +139,11 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px
 .workspace-actions { margin-left:auto;display:flex;align-items:center;gap:8px; }
 .save-indicator { display:flex;align-items:center;gap:6px;color:#89938c;font-size:10px;padding:0 9px; }
 .save-indicator svg { color:#58906b; }
+.runtime-status { display:inline-flex;align-items:center;gap:6px;color:#718078;font:9px var(--app-font-mono);white-space:nowrap; }
+.runtime-dot { width:6px;height:6px;border-radius:50%;background:#d7a34f;box-shadow:0 0 0 3px rgba(215,163,79,.14); }
+.runtime-status.remote { color:#4f8060; }
+.runtime-status.remote .runtime-dot { background:#5d9b70;box-shadow:0 0 0 3px rgba(93,155,112,.14); }
+.runtime-status.preview-only .runtime-dot { background:#d27b58;box-shadow:0 0 0 3px rgba(210,123,88,.14); }
 .quiet-button,.icon-button { display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #e4dfd4;background:#fffefa;color:#4e6257;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:600; }
 .quiet-button:hover,.icon-button:hover { background:#f1eee5; }
 .icon-button { width:31px;height:31px;padding:0; }
@@ -272,7 +277,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px
   .workspace-header { height:50px;padding:0 10px;gap:8px; }
   .workspace-header .brand { font-size:14px; }
   .project-select { max-width:125px;overflow:hidden;white-space:nowrap;font-size:10px; }
-  .save-indicator { display:none; }
+  .save-indicator,.runtime-status { display:none; }
   .workspace-actions { gap:5px; }
   .workspace-actions .quiet-button { padding:7px;width:31px;height:31px;overflow:hidden;color:transparent;gap:0; }
   .workspace-actions .quiet-button svg { color:#4e6257;flex:none; }
