@@ -2,7 +2,7 @@
  * Extract one or more project files from an AI assistant response.
  * Supports:
  *  - ```html / ```css / ```js / ```javascript / ```typescript fences
- *  - Filename hints inside the fence: <!-- index.html -->, /* styles.css */, // app.js
+ *  - Filename hints inside the fence: HTML comments, CSS comments, or JS comments
  *  - Fallback: raw <!doctype / <html content treated as index.html
  */
 export type ProjectFile = { path: string; content: string };
