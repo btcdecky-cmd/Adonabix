@@ -7,9 +7,9 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import {
   ArrowDownToLine, ArrowRight, Check, ChevronDown, CircleHelp,
-  Code2, ExternalLink, Eye, FileCode2, FilePlus2, FolderOpen,
+  Code2, Eye, FileCode2, FilePlus2, FolderOpen,
   Globe2, Laptop, LoaderCircle, MessageSquare, Monitor, Plus,
-  Pencil, Rocket, Send, Smartphone, Sparkles, Trash2, Zap,
+  Pencil, RefreshCw, Rocket, Send, Smartphone, Sparkles, Trash2, Zap,
 } from 'lucide-react';
 import { extractFilesFromStream } from '@/lib/extract-files';
 
@@ -146,6 +146,7 @@ function Workspace({ projects, activeProject, onProjectUpdate, onCreateProject, 
   const [notice, setNotice] = useState('');
   const [device, setDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [previewReload, setPreviewReload] = useState(0);
+  const [sandboxMode, setSandboxMode] = useState<'remote' | 'preview-only' | 'checking'>('checking');
   const scrollerRef = useRef<HTMLDivElement>(null);
   const initiatedRequestRef = useRef('');
   const selectedFile = activeProject.files.find((file) => file.path === selectedPath) || activeProject.files[0];
@@ -162,6 +163,14 @@ function Workspace({ projects, activeProject, onProjectUpdate, onCreateProject, 
   useEffect(() => {
     if (scrollerRef.current) scrollerRef.current.scrollTop = scrollerRef.current.scrollHeight;
   }, [activeProject.messages, streaming]);
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/sandbox/status')
+      .then((response) => response.ok ? response.json() as Promise<{ mode?: 'remote' | 'preview-only' }> : Promise.reject(new Error('status unavailable')))
+      .then((status) => { if (!cancelled) setSandboxMode(status.mode === 'remote' ? 'remote' : 'preview-only'); })
+      .catch(() => { if (!cancelled) setSandboxMode('preview-only'); });
+    return () => { cancelled = true; };
+  }, []);
   useEffect(() => {
     if (initialRequest && initiatedRequestRef.current !== initialRequest) {
       initiatedRequestRef.current = initialRequest;
@@ -294,6 +303,7 @@ function Workspace({ projects, activeProject, onProjectUpdate, onCreateProject, 
       <span className="header-divider" />
       <button className="project-select" onClick={() => openModal({ kind: 'rename-project' }, activeProject.name)} data-testid="button-rename-project"><span>{activeProject.name}</span><ChevronDown size={13} /></button>
       <span className="save-indicator"><Check size={12} /> {saveLabel}</span>
+      <span className={`runtime-status ${sandboxMode}`} role="status"><span className="runtime-dot" /> {sandboxMode === 'checking' ? 'Checking runtime' : sandboxMode === 'remote' ? 'Sandbox ready' : 'Preview-only runtime'}</span>
       <div className="workspace-actions">
         <button className="quiet-button export-site-button" onClick={exportSite} data-testid="button-export-site"><ArrowDownToLine size={13} /> Export HTML</button>
         <button className="quiet-button export-button" onClick={exportProject} data-testid="button-export-project"><FolderOpen size={13} /> Project JSON</button>
@@ -343,7 +353,7 @@ function Workspace({ projects, activeProject, onProjectUpdate, onCreateProject, 
           <button className={device === 'tablet' ? 'active' : ''} aria-label="Tablet preview" title="Tablet" onClick={() => setDevice('tablet')} data-testid="button-preview-tablet"><Laptop size={13} /></button>
           <button className={device === 'mobile' ? 'active' : ''} aria-label="Mobile preview" title="Mobile" onClick={() => setDevice('mobile')} data-testid="button-preview-mobile"><Smartphone size={13} /></button>
         </div>
-        <button className="mini-icon" aria-label="Reload preview" title="Reload preview" onClick={() => setPreviewReload((value) => value + 1)} data-testid="button-reload-preview"><ExternalLink size={13} /></button></div>
+        <button className="mini-icon" aria-label="Reload preview" title="Reload preview" onClick={() => setPreviewReload((value) => value + 1)} data-testid="button-reload-preview"><RefreshCw size={13} /></button></div>
         <div className="preview-stage">
           {html ? <iframe key={previewReload} className="preview-frame" title="Live website preview" srcDoc={html} style={{ maxWidth: deviceWidth }} sandbox="allow-scripts allow-forms allow-modals" data-testid="iframe-live-preview" /> : <div className="preview-empty"><Eye size={23} /><div>Your live preview will appear here once there’s an index.html file.</div><button className="quiet-button" onClick={() => openModal({ kind: 'new-file' }, 'index.html')} data-testid="button-create-html">Create index.html</button></div>}
         </div>

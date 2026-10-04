@@ -200,7 +200,10 @@ importers:
         version: 10.5.0
       safety-agent:
         specifier: ^0.1.7
-        version: 0.1.7
+        version: 0.1.7(ws@8.22.0)
+      ws:
+        specifier: ^8.18.3
+        version: 8.22.0
     devDependencies:
       '@types/cookie-parser':
         specifier: ^1.4.10
@@ -3461,6 +3464,18 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  ws@8.22.0:
+    resolution: {integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xdg-app-paths@5.1.0:
     resolution: {integrity: sha512-RAQ3WkPf4KTU1A8RtFx3gWywzVKe00tfOPFfl2NDGqbIFENQO4kqAJp7mhQjNj/33W5x5hiWWUdyfPq/5SU3QA==}
     engines: {node: '>=6'}
@@ -3803,7 +3818,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@daytonaio/sdk@0.138.0':
+  '@daytonaio/sdk@0.138.0(ws@8.22.0)':
     dependencies:
       '@aws-sdk/client-s3': 3.1146.0
       '@aws-sdk/lib-storage': 3.1146.0(@aws-sdk/client-s3@3.1146.0)
@@ -3816,7 +3831,7 @@ snapshots:
       expand-tilde: 2.0.2
       fast-glob: 3.3.3
       form-data: 4.0.6
-      isomorphic-ws: 5.0.0
+      isomorphic-ws: 5.0.0(ws@8.22.0)
       pathe: 2.0.3
       shell-quote: 1.12.0
       tar: 7.5.22
@@ -5617,7 +5632,9 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  isomorphic-ws@5.0.0: {}
+  isomorphic-ws@5.0.0(ws@8.22.0):
+    dependencies:
+      ws: 8.22.0
 
   jiti@2.7.0: {}
 
@@ -6144,9 +6161,9 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  safety-agent@0.1.7:
+  safety-agent@0.1.7(ws@8.22.0):
     dependencies:
-      '@daytonaio/sdk': 0.138.0
+      '@daytonaio/sdk': 0.138.0(ws@8.22.0)
       ipaddr.js: 2.5.0
       undici: 6.29.0
       unpdf: 1.8.1
@@ -6455,6 +6472,8 @@ snapshots:
       use-sync-external-store: 1.7.0(react@19.1.0)
 
   wrappy@1.0.2: {}
+
+  ws@8.22.0: {}
 
   xdg-app-paths@5.1.0:
     dependencies:
