@@ -200,7 +200,7 @@ importers:
         version: 10.5.0
       safety-agent:
         specifier: ^0.1.7
-        version: 0.1.7(ws@8.22.0)
+        version: 0.1.7(debug@4.4.3)(ws@8.22.0)
       ws:
         specifier: ^8.18.3
         version: 8.22.0
@@ -1943,8 +1943,8 @@ packages:
   bowser@2.14.1:
     resolution: {integrity: sha512-tzPjzCxygAKWFOJP011oxFHs57HzIhOEracIgAePE4pqB3LikALKnSzUyU4MGs9/iCEUuHlAJTjTc5M+u7YEGg==}
 
-  brace-expansion@5.0.9:
-    resolution: {integrity: sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==}
+  brace-expansion@5.0.12:
+    resolution: {integrity: sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==}
     engines: {node: 20 || >=22}
 
   braces@3.0.3:
@@ -3811,21 +3811,21 @@ snapshots:
 
   '@date-fns/tz@1.5.0': {}
 
-  '@daytonaio/api-client@0.138.0':
+  '@daytonaio/api-client@0.138.0(debug@4.4.3)':
     dependencies:
-      axios: 1.20.0
+      axios: 1.20.0(debug@4.4.3)
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@daytonaio/sdk@0.138.0(ws@8.22.0)':
+  '@daytonaio/sdk@0.138.0(debug@4.4.3)(ws@8.22.0)':
     dependencies:
       '@aws-sdk/client-s3': 3.1146.0
       '@aws-sdk/lib-storage': 3.1146.0(@aws-sdk/client-s3@3.1146.0)
-      '@daytonaio/api-client': 0.138.0
-      '@daytonaio/toolbox-api-client': 0.138.0
+      '@daytonaio/api-client': 0.138.0(debug@4.4.3)
+      '@daytonaio/toolbox-api-client': 0.138.0(debug@4.4.3)
       '@iarna/toml': 2.2.5
-      axios: 1.20.0
+      axios: 1.20.0(debug@4.4.3)
       busboy: 1.6.0
       dotenv: 17.4.2
       expand-tilde: 2.0.2
@@ -3840,9 +3840,9 @@ snapshots:
       - supports-color
       - ws
 
-  '@daytonaio/toolbox-api-client@0.138.0':
+  '@daytonaio/toolbox-api-client@0.138.0(debug@4.4.3)':
     dependencies:
-      axios: 1.20.0
+      axios: 1.20.0(debug@4.4.3)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -5072,9 +5072,9 @@ snapshots:
 
   atomic-sleep@1.0.0: {}
 
-  axios@1.20.0:
+  axios@1.20.0(debug@4.4.3):
     dependencies:
-      follow-redirects: 1.16.1
+      follow-redirects: 1.16.1(debug@4.4.3)
       form-data: 4.0.6
       https-proxy-agent: 5.0.1
       proxy-from-env: 2.1.0
@@ -5108,7 +5108,7 @@ snapshots:
 
   bowser@2.14.1: {}
 
-  brace-expansion@5.0.9:
+  brace-expansion@5.0.12:
     dependencies:
       balanced-match: 4.0.4
 
@@ -5487,7 +5487,9 @@ snapshots:
       locate-path: 8.0.0
       unicorn-magic: 0.3.0
 
-  follow-redirects@1.16.1: {}
+  follow-redirects@1.16.1(debug@4.4.3):
+    optionalDependencies:
+      debug: 4.4.3
 
   form-data@4.0.6:
     dependencies:
@@ -5743,7 +5745,7 @@ snapshots:
 
   minimatch@10.2.6:
     dependencies:
-      brace-expansion: 5.0.9
+      brace-expansion: 5.0.12
 
   minimist@1.2.8: {}
 
@@ -6161,9 +6163,9 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  safety-agent@0.1.7(ws@8.22.0):
+  safety-agent@0.1.7(debug@4.4.3)(ws@8.22.0):
     dependencies:
-      '@daytonaio/sdk': 0.138.0(ws@8.22.0)
+      '@daytonaio/sdk': 0.138.0(debug@4.4.3)(ws@8.22.0)
       ipaddr.js: 2.5.0
       undici: 6.29.0
       unpdf: 1.8.1
